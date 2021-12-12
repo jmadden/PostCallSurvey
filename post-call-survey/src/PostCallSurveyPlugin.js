@@ -26,7 +26,6 @@ export default class PostCallSurveyPlugin extends FlexPlugin {
 
         console.debug('SURVEY: ', survey);
         if (survey == 'true') {
-          console.log('SURVEY IS TRUE');
           const participantArray = payload.task.conference.participants.find(
             (results) => results.participantType === 'customer'
           );
