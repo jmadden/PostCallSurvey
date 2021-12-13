@@ -6,13 +6,14 @@ const { FLEX_APP_SERVICE_BASE_URL } = process.env;
 
 console.debug('REQUEST BASE URL: ', FLEX_APP_SERVICE_BASE_URL);
 
-export const dialNumber = async (callSid) => {
+export const dialNumber = async (callSid, caller) => {
   const resp = await axios({
     method: 'post',
     url: `${FLEX_APP_SERVICE_BASE_URL}/dial-survey`,
     data: {
       Token: manager.store.getState().flex.session.ssoTokenPayload.token,
       callSid,
+      caller,
     },
   });
 

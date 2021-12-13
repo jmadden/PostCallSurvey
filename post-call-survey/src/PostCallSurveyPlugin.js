@@ -22,8 +22,8 @@ export default class PostCallSurveyPlugin extends FlexPlugin {
     flex.Actions.addListener(
       'beforeHangupCall',
       async (payload, abortFunction) => {
-        const { survey } = payload.task.attributes;
-
+        const { survey, caller } = payload.task.attributes;
+        console.debug('TASK ATTRIBUTES: ', payload.task);
         console.debug('SURVEY: ', survey);
         if (survey == 'true') {
           const participantArray = payload.task.conference.participants.find(
@@ -32,9 +32,9 @@ export default class PostCallSurveyPlugin extends FlexPlugin {
           const customerCallSid = participantArray.callSid;
           console.debug('CUSTOMER CALL SID:', customerCallSid);
 
-          const dialSurvey = async (callSid) => {
+          const dialSurvey = async (callSid, caller) => {
             try {
-              const response = await dialNumber(callSid);
+              const response = await dialNumber(callSid, caller);
               console.debug('DIAL SURVEY RESPONSE: ', response);
               return response;
             } catch (e) {
@@ -43,7 +43,7 @@ export default class PostCallSurveyPlugin extends FlexPlugin {
             }
           };
 
-          await dialSurvey(customerCallSid);
+          await dialSurvey(customerCallSid, caller);
         }
       }
     );
